@@ -90,7 +90,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt update
-        sudo -E apt -y install $(curl -fsSL https://raw.githubusercontent.com/ham-0915/OpenWrt-N1/refs/heads/main/N1/Lede/2305)
+        sudo -E apt -y install $(curl -fsSL https://raw.githubusercontent.com/ham0223/N1-test/refs/heads/main/N1/Lede/2305?token=GHSAT0AAAAAADLCULML5DPZLBER7TCWKJKO2GHYSFA)
         sudo -E apt -y autoremove --purge
         sudo -E apt -y install libfuse-dev
         sudo -E apt -y install rename
@@ -199,5 +199,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        keep_latest: 10
+        keep_latest: 15
         delete_tags : true
