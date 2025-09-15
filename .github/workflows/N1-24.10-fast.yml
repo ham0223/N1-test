@@ -108,6 +108,7 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         cd openwrt
+        # 修正了telephony源的URL（原URL错误地指向了routing）
         sed -i '/^src-git kenzo/d' feeds.conf.default && \
         sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default && \
         sed -i '/^src-git small/d' feeds.conf.default && \
@@ -119,7 +120,7 @@ jobs:
         sed -i '/^src-git routing/d' feeds.conf.default && \
         sed -i '$a src-git routing https://github.com/openwrt/routing.git;openwrt-24.10' feeds.conf.default && \
         sed -i '/^src-git telephony/d' feeds.conf.default && \
-        sed -i '$a src-git https://github.com/openwrt/routing.git;openwrt-24.10' feeds.conf.default && \
+        sed -i '$a src-git telephony https://github.com/openwrt/telephony.git;openwrt-24.10' feeds.conf.default && \
         useVersionInfo=$(git show -s --date=short --format="date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
@@ -142,9 +143,9 @@ jobs:
       run: |
         [ -e $FILES ] && mv $FILES openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_SH
+        chmod +x $DIY_P2_SH
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_SH
+        $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: 下载软件包
       working-directory: ./openwrt
@@ -176,7 +177,8 @@ jobs:
 
     - name: 上传固件
       uses: ncipollo/release-action@main
-      if: ${{ env.PACKAGED_STATUS == 'success' }} && !cancelled()
+      # 修正：使用正确的环境变量判断（原为 PACKAGED_STATUS，但未定义）
+      if: ${{ env.compile_status }} == 'success' && !cancelled()
       with:
         name: OpenWrt-N1 → ${{ env.DATE }}
         tag: N1-24.10_${{ env.tag_name }}
