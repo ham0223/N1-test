@@ -117,7 +117,7 @@ jobs:
         sed -i '/^src-git luci/d' feeds.conf.default && \
         sed -i '$a src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-23.05' feeds.conf.default && \
         sed -i '/^src-git routing/d' feeds.conf.default && \
-        sed -i '$a src-git routing https://github.com/coolsnowwolf/routing' feeds.conf.default && \
+        sed -i '$a src-git routing https://github.com/coolsnowwolf/routing.git' feeds.conf.default && \
         sed -i '/^src-git telephony/d' feeds.conf.default && \
         sed -i '$a src-git telephony https://github.com/coolsnowwolf/telephony.git' feeds.conf.default && \
         sed -i '/^src-git nikki/d' feeds.conf.default && \
@@ -178,7 +178,7 @@ jobs:
 
     - name: 上传固件
       uses: ncipollo/release-action@main
-      if: ${{ env.PACKAGED_STATUS == 'success' }} && !cancelled()
+      if: ${{ env.compile_status }} == 'success' && !cancelled()
       with:
         name: OpenWrt-N1 → ${{ env.DATE }}
         tag: N1-23.05_${{ env.tag_name }}
