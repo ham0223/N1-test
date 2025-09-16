@@ -1,4 +1,5 @@
-name: N1-24.10-fast
+# 2025年9月16日-用我自己的config文件，测试流程代码是否编译速度快？
+name: N1-24.10-my
 
 on:
   workflow_dispatch:
@@ -7,7 +8,7 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-24.10
   #FEEDS_CONF: N1/Immortalwrt/TL-feeds.conf.default
-  CONFIG_FILE: N1/Immortalwrt/20250914-mini.config
+  CONFIG_FILE: N1/Immortalwrt/20250417.config
   DIY_P2_SH: N1/Immortalwrt/diy-part2.sh
   FILES: N1/Immortalwrt/files
   TZ: Asia/Shanghai
@@ -192,7 +193,7 @@ jobs:
           IP: 192.168.123.2
           账户: root
           密码: password	  
-          2025-0915：测试fast-2410。
+          2025-0916：测试流程代码。
             
     - name: 删除旧的固件
       uses: dev-drprasad/delete-older-releases@master
